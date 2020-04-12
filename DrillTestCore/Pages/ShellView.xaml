@@ -1,0 +1,41 @@
+﻿<Window x:Class="DrillTestCore.Pages.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:local="clr-namespace:DrillTestCore.Pages"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:ShellViewModel}"
+        Title="DrillTest" Height="450" Width="800" Icon="/Images/Query.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized"   >
+    <Window.Resources>
+        <ResourceDictionary Source="/DrillTestCore;component/Assets/Style.xaml" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" VerticalAlignment="Center" Height="40">
+            <MenuItem Header="File">
+                <!--菜单项为MenuItem，文字使用属性 Header-->
+                <MenuItem Header="Open"  Command="{s:Action ShowTestView }"></MenuItem>
+                <MenuItem Header="Save"  Command="{s:Action ShowHistoryView }"></MenuItem>
+                <MenuItem Header="Delete" Command="{s:Action ShowReportView}"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit"></MenuItem>
+            <MenuItem Header="View"></MenuItem>
+            <MenuItem Header="About"></MenuItem>
+        </Menu>
+        <!--<TabControl Grid.Row="1" Style="{StaticResource StyletConductorTabControl}" Margin="0,10,0,0"/>-->
+        <ContentControl Grid.Row="1" s:View.Model="{Binding ActiveItem}"/>
+        <StatusBar Grid.Row="2" VerticalAlignment="Center">
+            <TextBlock Text="#1压机状态："></TextBlock>
+            <TextBlock Text="statusBar"></TextBlock>
+            <TextBlock Text="#2压机状态：" Margin="10 0 0 0"></TextBlock>
+            <TextBlock Text="{Binding testttt}"></TextBlock>
+            <TextBox Text="{Binding testttt}"/>
+        </StatusBar>
+    </Grid>
+</Window>
