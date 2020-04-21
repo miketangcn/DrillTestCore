@@ -15,18 +15,22 @@ namespace DrillTestCore.Pages
         private readonly IWindowManager _windowManager;
         private readonly TestViewModel _testView;
         private readonly HistoryViewModel _historyView;
-        public string testttt { get; set; }
-        public ShellViewModel(IContainer container, IWindowManager windowManager, TestViewModel TestView, HistoryViewModel HistoryView)
+        public Subscriber _subscriber { get; set; }//模块连接状态消息订阅
+        public ShellViewModel(IContainer container, IWindowManager windowManager, TestViewModel TestView, HistoryViewModel HistoryView,IEventAggregator eventAggregator)
         {
             _testView = TestView;
             _historyView = HistoryView;
             _container = container;
             _windowManager = windowManager;
+            //_subscriber = subscriber;
+            _subscriber = new Subscriber(eventAggregator);
             this.Items.Add(TestView);
             this.Items.Add(HistoryView);
             this.ActiveItem = _testView;
             CommonMethods.ReadConfig();
-            testttt = "sdfasdfasdfas";           
+            //ReadValue.PublishEvent();
+           //ReadValue.ConnnectPlc1();
+           //ReadValue.ConnnectPlc2();
         }
         
         protected override void OnViewLoaded()

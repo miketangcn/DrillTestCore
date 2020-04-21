@@ -22,7 +22,7 @@ namespace DrillTestCore.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
                 optionsBuilder.UseMySql("server=localhost;database=Drill;user id=root;password=txg3115gwx", x => x.ServerVersion("8.0.19-mysql"));
             }
         }

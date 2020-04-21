@@ -6,9 +6,10 @@ using Stylet;
 
 namespace DrillTestCore.Pages
 {
-    public class Subscriber : IHandle<MyEvent>, INotifyPropertyChanged
+    public class Subscriber : IHandle<ConnectStatusEvent>, INotifyPropertyChanged
     {
-        public  bool _enable { get; set; }
+        public  string _connectStatus1 { get; set; }
+        public string _connectStatus2 { get; set; }
         public Subscriber(IEventAggregator eventAggregator)
         {
             eventAggregator.Subscribe(this);
@@ -16,9 +17,10 @@ namespace DrillTestCore.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Handle(MyEvent Event)
+        public void Handle(ConnectStatusEvent Event)
         {
-            _enable = Event._enable;
+            _connectStatus1 = Event._connectStatus1;
+            _connectStatus2 = Event._connectStatus2;
         }
     }
 }

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DrillTestCore.Pages"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:s="https://github.com/canton7/Stylet"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:oxy="http://oxyplot.org/wpf"
@@ -25,16 +24,20 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0"  Orientation="Horizontal" VerticalAlignment="Center">
-                <GroupBox Header="查询时间:" Margin="10 5 0 5" Width="300" Height="220">
+                <GroupBox Header="查询时间:" Margin="10 5 0 5" Width="335" Height="220">
                     <StackPanel Margin="0" Orientation="Horizontal">
-                        <ItemsControl ItemsSource="{Binding RdoQueryType}" Width="120" Margin="0">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <RadioButton  Margin="5 25"  Height="20" Content="{Binding Content}" IsChecked="{Binding IsCheck}" GroupName="RadioTimeButtons" >
-                                    </RadioButton>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <StackPanel Orientation="Vertical">
+                            <ItemsControl ItemsSource="{Binding RdoQueryType}" Width="136" Margin="0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton  Margin="5 16"  Height="20" Content="{Binding Content}" IsChecked="{Binding IsCheck}" GroupName="RadioTimeButtons" >
+                                        </RadioButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button FontSize="12" Width="100"  Height="30"  VerticalAlignment="Center" Margin="5 20 0 30" 
+                                   Content="查   询" IsEnabled="{Binding _subscriber._enable}" Command="{s:Action Query}"/>
+                        </StackPanel>
                         <StackPanel Orientation="Vertical" Width="160">
                             <TextBox Width="120" Margin="10" Text="{Binding QuerySearialNO}" />
                             <TextBlock Text="开始日期："  Margin="10 10 0 0"/>
@@ -44,12 +47,6 @@
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
-                <Button FontSize="12" Width="45"  Height="160"  VerticalAlignment="Center" Margin="5 20 0 30" IsEnabled="{Binding _subscriber._enable}" Command="{s:Action Query}">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Margin="0 0 0 5" Text="查" FontSize="14" />
-                        <TextBlock  Margin="0 5 0 5" Text="询" FontSize="14"/>
-                    </StackPanel>
-                </Button>
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Content="删除工件记录"  FontSize="12" Width="105" VerticalAlignment="Center" Margin="10 0 0 0" />
@@ -57,7 +54,7 @@
                 <Button Content="导出记录" FontSize="16" Width="105" VerticalAlignment="Center" Margin="10 0 0 0"/>
             </StackPanel>
             <DataGrid x:Name="ResultDataGrid" Margin="5,5,5,0"  AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="2"
-                  ItemsSource="{Binding Workrecs, Mode=OneWay}" SelectedItem="{Binding Workrec}" 
+                  ItemsSource="{Binding Workrecs}" SelectedItem="{Binding Workrec}" 
                   ScrollViewer.VerticalScrollBarVisibility="Visible" AlternationCount="2" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -65,10 +62,10 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="工件号" Binding="{Binding SerialNo  }" Width="80"/>
+                    <DataGridTextColumn Header="工件号" Binding="{Binding SerialNo  }" Width="100"/>
                     <DataGridTextColumn Header="层数" Binding="{Binding Layer}" Width="60"/>
                     <DataGridTextColumn Header="洞数" Binding="{Binding HoleCount}" Width="60"/>
-                    <DataGridTextColumn Header="日期" Binding="{Binding LastTime,StringFormat='{}{0:yyyy-MM-dd}'}"  Width="120"/>
+                    <DataGridTextColumn Header="日期" Binding="{Binding LastTime,StringFormat='{}{0:yyyy-MM-dd}'}"  Width="100"/>
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid  Margin="5,5,5,0"  AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="3"
@@ -88,7 +85,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <lvc:CartesianChart Grid.Column="1" Hoverable="False" LegendLocation="None" Margin="10" AnimationsSpeed="0" >
+        <!--<lvc:CartesianChart Grid.Column="1" Hoverable="False" LegendLocation="None" Margin="10" AnimationsSpeed="0" >
             <lvc:CartesianChart.Series >
                 <lvc:LineSeries Values="{Binding SingleChartValues}"  PointGeometry="{x:Null}" 
                   LineSmoothness="2"  StrokeThickness="2"  Stroke="#12B1AD" Fill="#E6F7F8" />
@@ -111,7 +108,8 @@
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+        </lvc:CartesianChart>-->
+        <oxy:PlotView Model="{Binding SingleModel}" Grid.Column="1" />
         <oxy:PlotView Model="{Binding MyModel}" Grid.Column="2" />
         <!--<lvc:CartesianChart Grid.Column="2"  Hoverable="False" LegendLocation="None" Margin="10" Series="{Binding MutilSeriesCollection}" 
                            DataTooltip="{x:Null}" AnimationsSpeed="0" >

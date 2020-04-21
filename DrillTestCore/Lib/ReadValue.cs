@@ -7,19 +7,28 @@ using HslCommunication.LogNet;
 using System.Threading.Tasks;
 using HslCommunication;
 using System.Threading;
+using Stylet;
+using DrillTestCore.Pages;
 
 namespace DrillTestCore.Lib
 {
-   public static class ReadValue
-    {
 
+    public static class ReadValue
+    {
+        private static IEventAggregator eventAggregator = new EventAggregator();
         private static ModbusTcpNet ModbusTcpNet1 = new ModbusTcpNet(Global.SystemPara.IP1);
         private static ModbusTcpNet ModbusTcpNet2 = new ModbusTcpNet(Global.SystemPara.IP2);
         public static short Distance, Pressure;
         public static bool IsMax;
         public static ILogNet logNet = new LogNetFileSize(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\Logs", 2 * 1024 * 1024);
-        private static System.Threading.Thread thread1 = new System.Threading.Thread(new System.Threading.ThreadStart(ThreadBackgroundRead1));
         private static System.Threading.Thread thread2 = new System.Threading.Thread(new System.Threading.ThreadStart(ThreadBackgroundRead2));
+
+        public static void PublishEvent()  //测试发布消息到历史窗口控制按钮使能
+        {
+            var c1 = Global.ConnectStatus1 == true ? "在线" : "离线！";
+            var c2 = Global.ConnectStatus2 == true ? "在线1" : "离线1！";
+            eventAggregator.Publish(new ConnectStatusEvent(c1, c2));
+        }
         public static async void ConnnectPlc1()
         {
             Task task = new Task(() =>
@@ -37,7 +46,6 @@ namespace DrillTestCore.Lib
                 {
                     Global.ConnectStatus1 = false;
                 }
-
             });
             task.Start();
             await task;
@@ -59,7 +67,6 @@ namespace DrillTestCore.Lib
                 {
                     Global.ConnectStatus2 = false;
                 }
-
             });
             task.Start();
             await task;
@@ -74,26 +81,17 @@ namespace DrillTestCore.Lib
         {
             ModbusTcpNet2.ConnectClose();
         }
-        public static void StartRead1()
-        {
 
-            thread1.IsBackground = true;
-            thread1.Start();
-
-        }
         public static void StartRead2()
         {
             thread2.IsBackground = true;
             thread2.Start();
 
         }
-        private static void ThreadBackgroundRead1()
+        public static bool Read1()
         {
             string address = "x=4;72";
-            //string addresswrite = "96";//要删掉
-
-            while (true)
-            {
+            bool flag = false;
                 if (!Global.ConnectStatus1)
                 {
                     logNet.WriteWarn("#1压机通讯故障");
@@ -147,10 +145,8 @@ namespace DrillTestCore.Lib
                         Global.ConnectStatus1 = true;
                         Global.Point1.x = ModbusTcpNet1.ByteTransform.TransInt16(result.Content, 0);
                         Global.Point1.y = ModbusTcpNet1.ByteTransform.TransInt16(result.Content, 2);
-                        Point point = new Point();
-                        point.x = Global.Point1.x;
-                        point.y = (short)(Global.Point1.y - 1000);
-                        CommonMethods.DateTreating1(point);
+                        flag= true;
+
                     }
                     else Global.ConnectStatus1 = false; //这段后面要恢复
                 }
@@ -159,8 +155,7 @@ namespace DrillTestCore.Lib
                     //设置读写标志为false   
                     Global.ConnectStatus1 = false;
                 }
-                Thread.Sleep(5);
-            }
+            return flag;
         }
         private static void ThreadBackgroundRead2()
         {

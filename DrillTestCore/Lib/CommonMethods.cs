@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Configuration;
 using DrillTestCore.Lib;
 using System.IO.Compression;
+using System.Linq;
 
 namespace DrillTestCore.Models
 {
@@ -167,13 +167,33 @@ namespace DrillTestCore.Models
 
         #region 数据库及数据文件处理
 
-        private static void WorkTableUpdate(Workrec workRecord)
+        public static void AddWorkrec(Workrec workRecord)
         {
-
+            using var db = new DrillContext();
+            var temp = db.Workrec.Where(w => w.SerialNo == workRecord.SerialNo).First();
+            if (temp != null)
+            {
+                temp.LastTime = workRecord.LastTime;
+                temp.HoleCount = workRecord.HoleCount;
+                db.Workrec.Update(temp);
+            }
+            else
+                db.Workrec.Add(workRecord);
+            db.SaveChanges();
         }
-        private static void HoleRecordUpdate(Holerec holeRecod)
+        public static void AddHolerec(Holerec holeRecod)
         {
-
+            using var db = new DrillContext();
+            var temp = db.Holerec.Where(h => h.SerialNo == holeRecod.SerialNo && h.HoleNumber == holeRecod.HoleNumber).First();
+            if (temp != null)
+            {
+                temp.Data = holeRecod.Data;
+                temp.TestTime = holeRecod.TestTime;
+                temp.MaxPressure = holeRecod.MaxPressure;
+                temp.MacId = holeRecod.MacId;
+                db.Holerec.Update(temp);
+            }
+            else db.Holerec.Add(holeRecod);
 
         }
         #endregion

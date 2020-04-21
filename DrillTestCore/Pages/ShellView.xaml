@@ -32,10 +32,9 @@
         <ContentControl Grid.Row="1" s:View.Model="{Binding ActiveItem}"/>
         <StatusBar Grid.Row="2" VerticalAlignment="Center">
             <TextBlock Text="#1压机状态："></TextBlock>
-            <TextBlock Text="statusBar"></TextBlock>
+            <TextBlock Text="{Binding _subscriber._connectStatus1}"></TextBlock>
             <TextBlock Text="#2压机状态：" Margin="10 0 0 0"></TextBlock>
-            <TextBlock Text="{Binding testttt}"></TextBlock>
-            <TextBox Text="{Binding testttt}"/>
+            <TextBlock Text="{Binding _subscriber._connectStatus2}"></TextBlock>
         </StatusBar>
     </Grid>
 </Window>
