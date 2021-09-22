@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using DrillTestCore.Lib;
+using DrillTestCore.Models;
 using System.IO.Compression;
 using System.Linq;
+using System.Windows.Media.TextFormatting;
 
-namespace DrillTestCore.Models
+namespace DrillTestCore.Lib
 {
     public static class CommonMethods
     {
@@ -97,94 +98,122 @@ namespace DrillTestCore.Models
         }
         #endregion
 
-        #region 采集数据后处理
-        public static void DateTreating1(Point point)
-        {
-            string FullFileName = Global.DateFilePath + Global.DateFileName1;
-            //测试状态
-            if (Global.Working1)
-            {
-                if (Global.Point1.x >= Global.SystemPara.con_chek_x && Global.Point1.y >= Global.SystemPara.con_chek_y)//进入压洞状态
-                {
-                    Global.SubWorking1 = true;
-                    //FrmTest.frmtest.SetRedo1Ena(false); 这个地方要增加设置测试窗口重新测试为不可用
-                    if (Global.Point1.y > Global.MaxPressure1)//设置最大压力
-                    {
-                        //Global.MaxPressure1 = Global.Point1.y;
-                    }
-                    Global.lstPoint1.Add(point);
-                }
-                else if (Global.Point1.x < Global.SystemPara.con_chek_x || Global.Point1.y < Global.SystemPara.con_chek_y)//不在压洞状态
-                {
-                    Global.SubWorking1 = false;
-                }
+        #region 采集数据后处理(作废)
+        //public static void DateTreating1(Point point)
+        //{
+        //    string FullFileName = Global.DateFilePath + Global.DateFileName1;
+        //    //测试状态
+        //    if (Global.Working1)
+        //    {
+        //        if (Global.Point1.x >= Global.SystemPara.con_chek_x && Global.Point1.y >= Global.SystemPara.con_chek_y)//进入压洞状态
+        //        {
+        //            Global.SubWorking1 = true;
+        //            //FrmTest.frmtest.SetRedo1Ena(false); 这个地方要增加设置测试窗口重新测试为不可用
+        //            if (Global.Point1.y > Global.MaxPressure1)//设置最大压力
+        //            {
+        //                //Global.MaxPressure1 = Global.Point1.y;
+        //            }
+        //            Global.lstPoint1.Add(point);
+        //        }
+        //        else if (Global.Point1.x < Global.SystemPara.con_chek_x || Global.Point1.y < Global.SystemPara.con_chek_y)//不在压洞状态
+        //        {
+        //            Global.SubWorking1 = false;
+        //        }
 
-                if (Global.LastSubWorking1 && !Global.SubWorking1)//一个洞压完
-                {
-                    //调用异步写数据库和写数据文件代码
-                    Global.WorkRecord1.LastTime = DateTime.Now;
-                    Global.WorkRecord1.HoleCount = Global.HoleNumber1;
-                    Global.HoleRecod1.MaxPressure = (float)Math.Round((Global.MaxPressure1 * Global.SystemPara.con_factor_y - 10), 2);
-                    Global.HoleRecod1.TestTime = DateTime.Now;
-                    Global.HoleRecod1.SerialNo = Global.WorkRecord1.SerialNo;
-                    Global.HoleRecod1.HoleNumber = Global.WorkRecord1.HoleCount;
-                    Global.HoleRecod1.Data = ListToString(Global.lstPoint1);
-                    Global.HoleRecod1.MacId = 1;
-                    //HoleRecordUpdate(Global.HoleRecod1); 向数据库写记录
-                    //WorkTableUpdate(Global.WorkRecord1); 向数据库写记录
-                    if (Models.Global.SystemPara.AutoOut)
-                    {
-                        if (GetFilePath(FullFileName))
-                        {
-                            //NopiExcelHelper<Point>.AddExcel(Global.lstPoint1, FullFileName, "hole" + Global.HoleRecod1.HoleNumber.ToString(),
-                                                            //Global.HoleRecod1.MaxPressure);
-                        }
-                    }
-                    //FrmTest.frmtest.SetRedo1Ena(true); 这个地方要增加设置测试窗口重新测试为不可用
-                    Global.MaxPressure1 = 0;
-                    Global.HoleNumber1++;
-                    #region 要删除
-                    //ReadValue.Distance = 0;
-                    //ReadValue.Pressure = 320;
-                    //ReadValue.IsMax = false;
-                    #endregion
-                }
-                if (!Global.SubWorking1)
-                {
-                    Global.lstPoint1.Clear();
-                }
+        //        if (Global.LastSubWorking1 && !Global.SubWorking1)//一个洞压完
+        //        {
+        //            //调用异步写数据库和写数据文件代码
+        //            Global.WorkRecord1.LastTime = DateTime.Now;
+        //            Global.WorkRecord1.HoleCount = Global.HoleNumber1;
+        //            Global.HoleRecod1.MaxPressure = (float)Math.Round((Global.MaxPressure1 * Global.SystemPara.con_factor_y - 10), 2);
+        //            Global.HoleRecod1.TestTime = DateTime.Now;
+        //            Global.HoleRecod1.SerialNo = Global.WorkRecord1.SerialNo;
+        //            Global.HoleRecod1.HoleNumber = Global.WorkRecord1.HoleCount;
+        //            Global.HoleRecod1.Data = ListToString(Global.lstPoint1);
+        //            Global.HoleRecod1.MacId = 1;
+        //            //HoleRecordUpdate(Global.HoleRecod1); 向数据库写记录
+        //            //WorkTableUpdate(Global.WorkRecord1); 向数据库写记录
+        //            if (Models.Global.SystemPara.AutoOut)
+        //            {
+        //                if (GetFilePath(FullFileName))
+        //                {
+        //                    //NopiExcelHelper<Point>.AddExcel(Global.lstPoint1, FullFileName, "hole" + Global.HoleRecod1.HoleNumber.ToString(),
+        //                                                    //Global.HoleRecod1.MaxPressure);
+        //                }
+        //            }
+        //            //FrmTest.frmtest.SetRedo1Ena(true); 这个地方要增加设置测试窗口重新测试为不可用
+        //            Global.MaxPressure1 = 0;
+        //            Global.HoleNumber1++;
+        //            #region 要删除
+        //            //ReadValue.Distance = 0;
+        //            //ReadValue.Pressure = 320;
+        //            //ReadValue.IsMax = false;
+        //            #endregion
+        //        }
+        //        if (!Global.SubWorking1)
+        //        {
+        //            Global.lstPoint1.Clear();
+        //        }
 
-                Global.LastSubWorking1 = Global.SubWorking1;
+        //        Global.LastSubWorking1 = Global.SubWorking1;
 
-            }
-            //非测试状态
-            else
-            {
-                Global.lstPoint1.Clear();
-            }
-        }
+        //    }
+        //    //非测试状态
+        //    else
+        //    {
+        //        Global.lstPoint1.Clear();
+        //    }
+        //}
         #endregion
 
         #region 数据库及数据文件处理
 
         public static void AddWorkrec(Workrec workRecord)
         {
-            using var db = new DrillContext();
-            var temp = db.Workrec.Where(w => w.SerialNo == workRecord.SerialNo).First();
-            if (temp != null)
+            var _workRecord = new Workrec()
             {
-                temp.LastTime = workRecord.LastTime;
-                temp.HoleCount = workRecord.HoleCount;
-                db.Workrec.Update(temp);
+                SerialNo = workRecord.SerialNo,
+                Layer = workRecord.Layer,
+                HoleCount = workRecord.HoleCount,
+                LastTime = workRecord.LastTime
+            };
+
+
+            using (var db = new DrillContext())
+            {
+                //int i = db.Workrec.Where(w => w.SerialNo == workRecord.SerialNo).Count();
+                var temp = db.Workrec.Where(w => w.SerialNo == workRecord.SerialNo).FirstOrDefault();
+                if (temp != null)
+                {
+                    temp.LastTime = _workRecord.LastTime;
+                    temp.HoleCount = (short)(_workRecord.HoleCount);
+                    db.Workrec.Update(temp);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Workrec.Add(_workRecord);
+                    db.SaveChanges();
+                }
+                    
             }
-            else
-                db.Workrec.Add(workRecord);
-            db.SaveChanges();
+
         }
         public static void AddHolerec(Holerec holeRecod)
         {
+            var _holeRecord = new Holerec()
+            {
+                Data = holeRecod.Data,
+                TestTime = holeRecod.TestTime,
+                MaxPressure = holeRecod.MaxPressure,
+                MacId = holeRecod.MacId,
+                SerialNo = holeRecod.SerialNo,
+                HoleNumber = holeRecod.HoleNumber,
+                LayerNo = holeRecod.LayerNo
+            };
+
             using var db = new DrillContext();
-            var temp = db.Holerec.Where(h => h.SerialNo == holeRecod.SerialNo && h.HoleNumber == holeRecod.HoleNumber).First();
+            var temp = db.Holerec.Where(h => h.SerialNo == holeRecod.SerialNo && h.HoleNumber == holeRecod.HoleNumber).FirstOrDefault();
             if (temp != null)
             {
                 temp.Data = holeRecod.Data;
@@ -193,8 +222,8 @@ namespace DrillTestCore.Models
                 temp.MacId = holeRecod.MacId;
                 db.Holerec.Update(temp);
             }
-            else db.Holerec.Add(holeRecod);
-
+            else db.Holerec.Add(_holeRecord);
+            db.SaveChanges();
         }
         #endregion
 

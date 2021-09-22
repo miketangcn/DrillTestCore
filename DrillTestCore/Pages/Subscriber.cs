@@ -9,7 +9,7 @@ namespace DrillTestCore.Pages
     public class Subscriber : IHandle<ConnectStatusEvent>, INotifyPropertyChanged
     {
         public  string _connectStatus1 { get; set; }
-        public string _connectStatus2 { get; set; }
+        public  string _connectStatus2 { get; set; }
         public Subscriber(IEventAggregator eventAggregator)
         {
             eventAggregator.Subscribe(this);

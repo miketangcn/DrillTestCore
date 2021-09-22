@@ -24,7 +24,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0"  Orientation="Horizontal" VerticalAlignment="Center">
-                <GroupBox Header="查询时间:" Margin="10 5 0 5" Width="335" Height="220">
+                <GroupBox Header="本地查询:" Margin="10 5 0 5" Width="335" Height="220">
                     <StackPanel Margin="0" Orientation="Horizontal">
                         <StackPanel Orientation="Vertical">
                             <ItemsControl ItemsSource="{Binding RdoQueryType}" Width="136" Margin="0">
@@ -36,7 +36,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <Button FontSize="12" Width="100"  Height="30"  VerticalAlignment="Center" Margin="5 20 0 30" 
-                                   Content="查   询" IsEnabled="{Binding _subscriber._enable}" Command="{s:Action Query}"/>
+                                   Content="查   询" IsEnabled="{Binding _subscriber_enable}" Command="{s:Action Query}"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="160">
                             <TextBox Width="120" Margin="10" Text="{Binding QuerySearialNO}" />
@@ -49,12 +49,12 @@
                 </GroupBox>
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Content="删除工件记录"  FontSize="12" Width="105" VerticalAlignment="Center" Margin="10 0 0 0" />
-                <Button Content="删除洞记录" FontSize="12" Width="105" VerticalAlignment="Center" Margin="10 0 0 0"/>
-                <Button Content="导出记录" FontSize="16" Width="105" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                <Button Content="删除工件记录"  Command="{s:Action DeleteWorkRec}" FontSize="12" Width="105" VerticalAlignment="Center" Margin="10 0 0 0" />
+                <Button Content="删除洞记录" Command="{s:Action DeleteHoleRec}" FontSize="12" Width="105" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                <Button Content="导出记录"  Command="{s:Action ExportExcel }" FontSize="16" Width="105" VerticalAlignment="Center" Margin="10 0 0 0" Cursor="Hand"/>
             </StackPanel>
             <DataGrid x:Name="ResultDataGrid" Margin="5,5,5,0"  AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="2"
-                  ItemsSource="{Binding Workrecs}" SelectedItem="{Binding Workrec}" 
+                  ItemsSource="{Binding Workrecs}" SelectedItem="{Binding Workrec, Mode=TwoWay}" 
                   ScrollViewer.VerticalScrollBarVisibility="Visible" AlternationCount="2" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -65,11 +65,11 @@
                     <DataGridTextColumn Header="工件号" Binding="{Binding SerialNo  }" Width="100"/>
                     <DataGridTextColumn Header="层数" Binding="{Binding Layer}" Width="60"/>
                     <DataGridTextColumn Header="洞数" Binding="{Binding HoleCount}" Width="60"/>
-                    <DataGridTextColumn Header="日期" Binding="{Binding LastTime,StringFormat='{}{0:yyyy-MM-dd}'}"  Width="100"/>
+                    <DataGridTextColumn Header="日期" Binding="{Binding LastTime,StringFormat={}{0:yyyy-MM-dd}}"  Width="100"/>
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid  Margin="5,5,5,0"  AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="3"
-                  ItemsSource="{Binding Holerecs}" SelectedItem="{Binding Holerec}" 
+                  ItemsSource="{Binding Holerecs}" SelectedItem="{Binding Holerec, Mode=TwoWay}" 
                   ScrollViewer.VerticalScrollBarVisibility="Visible" AlternationCount="2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -79,8 +79,8 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="层号" Binding="{Binding LayerNo}" Width="55"/>
                     <DataGridTextColumn Header="洞号" Binding="{Binding HoleNumber}" Width="55"/>
-                    <DataGridTextColumn Header="最大压力" Binding="{Binding MaxPressure}" Width="80" />
-                    <DataGridTextColumn Header="日期" Binding="{Binding TestTime,StringFormat='{}{0:yyyy-MM-dd}'}"  Width="110"/>
+                    <DataGridTextColumn Header="最大压力" Binding="{Binding MaxPressure,StringFormat={}{0:F2}}" Width="80" />
+                    <DataGridTextColumn Header="日期" Binding="{Binding TestTime,StringFormat={}{0:yyyy-MM-dd}}"  Width="110"/>
                     <DataGridTextColumn Header="机号" Binding="{Binding MacId}"/>
                 </DataGrid.Columns>
             </DataGrid>

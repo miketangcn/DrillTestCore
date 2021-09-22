@@ -1,0 +1,19 @@
+﻿<Window x:Class="DrillTestBrowser.Pages.AboutView.AboutView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:local="clr-namespace:DrillTestBrowser.Pages.AboutView"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:AboutViewModel}"
+        Title="About" Height="300" Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <TextBlock Margin="0 15 0 5" Text="This Programm Design by Tangxiaogang" Foreground="Red"/>
+    <TextBlock  Margin="0 5 0 5" Text="Phone:8613775196620"/>
+    <TextBlock Margin="0 5 0 5" Text="QQ:346139600"/>
+    <TextBlock Margin="0 5 0 5" Text="WeChat:miketangcn"/>
+    <TextBlock Margin="0 5 0 5" Text="Email:miketangcn@126.com"/>
+    <Button Margin="0 50" Width="120" Content="Confirm" Command="{s:Action Close}"/>
+</StackPanel>
+</Window>

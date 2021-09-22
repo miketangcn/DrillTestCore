@@ -23,7 +23,7 @@ namespace DrillTestCore.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseMySql("server=localhost;database=Drill;user id=root;password=txg3115gwx", x => x.ServerVersion("8.0.19-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=Drill;user id=root;password=txg3115gwx", x => x.ServerVersion("8.0.20-mysql"));
             }
         }
 
@@ -34,6 +34,7 @@ namespace DrillTestCore.Models
                 entity.ToTable("holerec");
 
                 entity.Property(e => e.Data)
+                    .IsRequired()
                     .HasColumnType("longtext")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");

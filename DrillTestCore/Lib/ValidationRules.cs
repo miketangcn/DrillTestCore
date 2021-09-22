@@ -28,7 +28,7 @@ namespace DrillTestCore.Lib
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            Regex LayerReg = new Regex(@"^([1-9][0-9]{1,2})$");
+            Regex LayerReg = new Regex(@"^([1-9][0-9]{0,1})$");
             if (!LayerReg.IsMatch(value.ToString()))
             {
                 return new ValidationResult(false, "请输入100以内数字");
