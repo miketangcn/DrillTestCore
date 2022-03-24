@@ -11,7 +11,7 @@ namespace DrillTestCore.Models
         public int x { get; set; }
         public int y { get; set; }
     }
-    public class ActualPoint : INotifyPropertyChanged
+    public class ActualPoint : INotifyPropertyChanged//实际的点值
     {
         public float x { get; set; }
         public float y { get; set; }
